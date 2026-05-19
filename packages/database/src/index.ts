@@ -1,3 +1,22 @@
+import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+
+// Dynamically locate and load the root .env configuration
+const possiblePaths = [
+  path.resolve(__dirname, '../../../.env'),
+  path.resolve(__dirname, '../../../../.env'),
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(process.cwd(), '../../.env'),
+];
+
+for (const p of possiblePaths) {
+  if (fs.existsSync(p)) {
+    dotenv.config({ path: p });
+    break;
+  }
+}
+
 import { PrismaClient } from '@prisma/client';
 
 export const prisma = new PrismaClient();
