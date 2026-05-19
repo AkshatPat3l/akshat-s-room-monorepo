@@ -1,0 +1,34 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Service {
+  id          String             @id @default(uuid())
+  name        String
+  description String
+  slots       AvailabilitySlot[]
+}
+
+model AvailabilitySlot {
+  id        String    @id @default(uuid())
+  serviceId String
+  startTime DateTime
+  endTime   DateTime
+  status    String    // "AVAILABLE" | "BOOKED"
+  service   Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  booking   Booking?
+}
+
+model Booking {
+  id            String           @id @default(uuid())
+  slotId        String           @unique
+  customerName  String
+  customerEmail String
+  createdAt     DateTime         @default(now())
+  slot          AvailabilitySlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+}
