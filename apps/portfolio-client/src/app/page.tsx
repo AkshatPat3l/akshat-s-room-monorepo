@@ -1,8 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Navigation from '../components/Navigation';
-import ThreeCanvas from '../components/ThreeCanvas';
+
+const ThreeCanvas = dynamic(() => import('../components/ThreeCanvas'), {
+  ssr: false,
+});
+
 import BentoOverlays from '../components/BentoOverlays';
 import { BentoCard } from '@monorepo/ui';
 import { Sparkles, Terminal, Cpu, Calendar, ShieldCheck } from 'lucide-react';
@@ -42,7 +47,7 @@ export default function Home() {
             </div>
 
             {/* Render 3D Canvas Mesh */}
-            <div className="flex-1 w-full min-h-[70vh] bg-gradient-to-b from-[#0c1221] to-[#080b13]">
+            <div className="w-full h-[calc(100vh-76px)] bg-gradient-to-b from-[#0c1221] to-[#080b13] relative">
               <ThreeCanvas
                 onFurnitureSelect={handleFurnitureSelect}
                 activeNodeId={activeNodeId}
